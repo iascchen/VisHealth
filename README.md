@@ -23,6 +23,6 @@ account = { "email" : "iascchen@gmail.com" , "passwd" : "yourpassword" }
 
 ## Contact Me
 Email ： iascchen AT gmail.com or iasc AT 163.com
-Sina Weibo ： [@问天鼓](http://www.weibo.com/u/2090594487）
+Sina Weibo ： [@问天鼓](http://www.weibo.com/u/2090594487)
 
 
