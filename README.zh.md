@@ -44,6 +44,6 @@ account = { "email" : "iasc@163.com" , "passwd" : "yourpassword" }
 iascchen AT gmail.com or iasc AT 163.com
 
 加我为好友 ：
-1. 新浪微博 ： [@问天鼓](http://www.weibo.com/u/2090594487）
+1. 新浪微博 ： [@问天鼓](http://www.weibo.com/u/2090594487)
 2. Jawbone Up 账号 ： iasc@163.com 
 
