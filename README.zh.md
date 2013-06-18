@@ -16,19 +16,24 @@ VisHealth 是一个面向运动和健康监控数据挖掘和可视化的开源�
 
 ## 版本发布
 
+20130618
+
+增加了Codoon运动的API。这些API Hack自Codoon Android v.3.3.5 版，随时可能失效。
+
 20130613
+
 首先实现了Jawbone up 手环的非官方API。这些请求目前能够在Jawbone的 v.1.34 中使用，随时可能失效。
 参考链接 : [eric-blue](http://eric-blue.com/2011/11/28/jawbone-up-api-discovery/), the "healthCredits" method can't be accessed. [alexburrell](https://github.com/alexburrell/up-for-status-board])
 
-20130618
-增加了Codoon运动的API。这些API Hack自Codoon Android v.3.3.5 版，随时可能失效。
-
 ## 使用
 
-### Jawbone UP API
-如果想使用这段代码，可以在打开 /devices/jawboneup.py， 在main方法中，修改自己的用户名和密码，然后执行main即可。此代码会将交互的json文件存放在 data/jawboneup 目录下
+Jawbone UP : /devices/jawboneup.py
+
+Codoon : /device/codoon.py
+
+如果想使用这段代码，可以在打开相应文件， 在main方法中，修改自己的用户名和密码，然后执行main即可。此代码会将交互的json文件存放在 data/ 目录下
 ```python
-account = { "email" : "iasc@163.com" , "passwd" : "yourpassword" }
+account = { "email" : "your@email" , "passwd" : "yourpassword" }
 ```
 
 ## 帮助
