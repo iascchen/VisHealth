@@ -29,7 +29,7 @@ VisHealth 是一个面向运动和健康监控数据挖掘和可视化的开源�
 
 Jawbone UP : /devices/jawboneup.py
 
-Codoon : /device/codoon.py
+Codoon : /devices/codoon.py
 
 如果想使用这段代码，可以在打开相应文件， 在main方法中，修改自己的用户名和密码，然后执行main即可。此代码会将交互的json文件存放在 data/ 目录下
 ```python
