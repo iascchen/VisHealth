@@ -13,6 +13,9 @@ Firstly, VisHealth implemented jawbone up band un-official api. these functions 
 Can used in Jawbone Server version : v.1.34
 Reference : [eric-blue](http://eric-blue.com/2011/11/28/jawbone-up-api-discovery/), the "healthCredits" method can't be accessed. [alexburrell](https://github.com/alexburrell/up-for-status-board])
 
+20130618
+Add codoon sports api, hacked from codoon sports+ android 3.3.5
+
 ## Using it
 
 ### Jawbone UP
