@@ -18,10 +18,13 @@ Add codoon sports api, hacked from codoon sports+ android 3.3.5
 
 ## Using it
 
-### Jawbone UP
-If you want to use this api, please open /devices/jawboneup.py，then change the main method, filled the account info with your Jawbone account， then you can run the main method and read the return json file in folder "data/jawboneup"
+Jawbone UP : /devices/jawboneup.py
+
+Codoon : /device/codoon.py
+
+If you want to use this api, please open these file，then change the main method, filled the account info with your Jawbone account， then you can run the main method and read the return json file in folder "data/jawboneup"
 ```pythont
-account = { "email" : "iascchen@gmail.com" , "passwd" : "yourpassword" }
+account = { "email" : "your@email" , "passwd" : "yourpassword" }
 ```
 
 ## Contact Me
