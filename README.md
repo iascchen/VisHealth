@@ -8,22 +8,24 @@ GPLv3
 
 ## Release Info
 
+20130618
+
+Add codoon sports api, hacked from codoon sports+ android 3.3.5
+
 20130613
+
 Firstly, VisHealth implemented jawbone up band un-official api. these functions are hacked from Jawbone up App.
 Can used in Jawbone Server version : v.1.34
 Reference : [eric-blue](http://eric-blue.com/2011/11/28/jawbone-up-api-discovery/), the "healthCredits" method can't be accessed. [alexburrell](https://github.com/alexburrell/up-for-status-board])
-
-20130618
-Add codoon sports api, hacked from codoon sports+ android 3.3.5
 
 ## Using it
 
 Jawbone UP : /devices/jawboneup.py
 
-Codoon : /device/codoon.py
+Codoon : /devices/codoon.py
 
-If you want to use this api, please open these file，then change the main method, filled the account info with your Jawbone account， then you can run the main method and read the return json file in folder "data/jawboneup"
-```pythont
+If you want to use this api, please open these file，then change the main method, filled the account info with your Jawbone account， then you can run the main method and read the return json file in folder "data/"
+```python
 account = { "email" : "your@email" , "passwd" : "yourpassword" }
 ```
 
