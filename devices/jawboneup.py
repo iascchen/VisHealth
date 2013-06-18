@@ -4,7 +4,7 @@ __author__ = 'iascchen@gmail.com'
 
 import requests
 import json
-import nudgeurl
+import jawboneurl
 import logging
 import hashlib
 import time
@@ -62,7 +62,8 @@ class DeviceJawboneUp:
 
     # logins
     def get_auth_info(self , email , password ):
-        command = nudgeurl.getLoginUrl()
+        command = jawboneurl.getLoginUrl()
+        print command
         request_data = { 'email': email, 'pwd':  password, 'service': 'nudge' }
         response = requests.post(command , request_data)
         content = json.loads(response.content)
@@ -83,8 +84,8 @@ class DeviceJawboneUp:
         return content
 
     def get_users_login(self , email , password ):
-        command = nudgeurl.getLogin2Url()
-
+        command = jawboneurl.getLogin2Url()
+        print command
         hCode = hashlib.sha1()
         hCode.update(password)
         hash = hCode.hexdigest()
@@ -109,128 +110,128 @@ class DeviceJawboneUp:
         return content
 
     def get_users_score(self , userXid = "@me", datestr = None):
-        command = nudgeurl.getUserScoresUrl( userXid )
+        command = jawboneurl.getUserScoresUrl( userXid )
         request_data = {'date' : datestr }
         return self.excuteRequst(command , params = request_data , headers = self.nudgeHeaders)
 
     def get_users_social(self , userXid = "@me", datestr = None , limit = 20):
-        command = nudgeurl.getUserSocialFeedUrl( userXid )
+        command = jawboneurl.getUserSocialFeedUrl( userXid )
         request_data = {'date' : datestr, 'limit' : limit }
         return self.excuteRequst(command , params = request_data , headers = self.nudgeHeaders)
 
     # this result is similar with get_users_social
     def get_users_feed(self , userXid = "@me", limit = 20):
-        command = nudgeurl.getUserFeedUrl( userXid )
+        command = jawboneurl.getUserFeedUrl( userXid )
         request_data = {'limit' : limit }
         return self.excuteRequst(command , params = request_data , headers = self.nudgeHeaders)
 
     def get_event(self , type , evtXid):
-        command = nudgeurl.getEventUrl( type , evtXid )
+        command = jawboneurl.getEventUrl( type , evtXid )
         return self.excuteRequst(command , params = None , headers = self.nudgeHeaders)
 
     def get_moves(self , evtXid ):
-        return self.getUserEventFunc( nudgeurl.getMoveUrl , evtXid  )
+        return self.getUserEventFunc( jawboneurl.getMoveUrl , evtXid  )
 
     def get_meals(self , evtXid ):
-        return self.getUserEventFunc( nudgeurl.getMealUrl , evtXid  )
+        return self.getUserEventFunc( jawboneurl.getMealUrl , evtXid  )
 
     def get_moods(self , evtXid ):
-        return self.getUserEventFunc( nudgeurl.getMoodsUrl , evtXid  )
+        return self.getUserEventFunc( jawboneurl.getMoodsUrl , evtXid  )
 
     def get_workouts(self , evtXid ):
-        return self.getUserEventFunc( nudgeurl.getWorkoutUrl , evtXid  )
+        return self.getUserEventFunc( jawboneurl.getWorkoutUrl , evtXid  )
 
     def get_sleeps(self , evtXid ):
-        return self.getUserEventFunc( nudgeurl.getSleepsUrl , evtXid  )
+        return self.getUserEventFunc( jawboneurl.getSleepsUrl , evtXid  )
 
     def get_alias(self , evtXid ):
-        return self.getUserEventFunc( nudgeurl.getUserAliasesUrl , evtXid  )
+        return self.getUserEventFunc( jawboneurl.getUserAliasesUrl , evtXid  )
 
     def get_users_sleeps(self  , startTime , endTime , userXid = "@me", limit = 100):
-        return self.getUserEventsInPeriodFunc( nudgeurl.getUserSleepsUrl, startTime , endTime ,
+        return self.getUserEventsInPeriodFunc( jawboneurl.getUserSleepsUrl, startTime , endTime ,
             userXid = userXid, limit = limit)
 
     def get_users_workouts(self  , startTime , endTime , userXid = "@me", limit = 100):
-        return self.getUserEventsInPeriodFunc( nudgeurl.getUserWorkoutsUrl, startTime , endTime ,
+        return self.getUserEventsInPeriodFunc( jawboneurl.getUserWorkoutsUrl, startTime , endTime ,
             userXid = userXid, limit = limit)
 
     def get_users_band(self  , startTime , endTime , userXid = "@me", limit = 100):
-        return self.getUserEventsInPeriodFunc( nudgeurl.getUserBandUrl, startTime , endTime ,
+        return self.getUserEventsInPeriodFunc( jawboneurl.getUserBandUrl, startTime , endTime ,
             userXid = userXid, limit = limit)
 
     def get_users_moods(self  ,userXid = "@me"):
-        return self.getUserEventsInPeriodFunc( nudgeurl.getUserMoodUrl, startTime = None, endTime = None,
+        return self.getUserEventsInPeriodFunc( jawboneurl.getUserMoodUrl, startTime = None, endTime = None,
             userXid = userXid, limit = None)
 
     def get_users_goals(self  ,userXid = "@me"):
-        return self.getUserEventsInPeriodFunc( nudgeurl.getUserGoalsUrl, startTime = None, endTime = None,
+        return self.getUserEventsInPeriodFunc( jawboneurl.getUserGoalsUrl, startTime = None, endTime = None,
             userXid = userXid, limit = None)
 
     def get_users_acknowledgement(self  ,userXid = "@me"):
-        return self.getUserEventsInPeriodFunc( nudgeurl.getUserAcknowledgeUrl, startTime = None, endTime = None,
+        return self.getUserEventsInPeriodFunc( jawboneurl.getUserAcknowledgeUrl, startTime = None, endTime = None,
             userXid = userXid, limit = None)
 
     def get_users_aliases(self  ,userXid = "@me"):
-        return self.getUserEventsInPeriodFunc( nudgeurl.getUserAliasesUrl, startTime = None, endTime = None,
+        return self.getUserEventsInPeriodFunc( jawboneurl.getUserAliasesUrl, startTime = None, endTime = None,
             userXid = userXid, limit = None)
 
     def get_users_friends(self  ,userXid = "@me"):
-        return self.getUserEventsInPeriodFunc( nudgeurl.getUserFriendsUrl, startTime = None, endTime = None,
+        return self.getUserEventsInPeriodFunc( jawboneurl.getUserFriendsUrl, startTime = None, endTime = None,
             userXid = userXid, limit = None)
 
     def get_users_settings(self  ,userXid = "@me"):
-        return self.getUserEventsInPeriodFunc( nudgeurl.getUserSettingsUrl, startTime = None, endTime = None,
+        return self.getUserEventsInPeriodFunc( jawboneurl.getUserSettingsUrl, startTime = None, endTime = None,
             userXid = userXid, limit = None)
 
     def get_users_timezone(self  ,userXid = "@me"):
-        return self.getUserEventsInPeriodFunc( nudgeurl.getUserTimeZoneUrl, startTime = None, endTime = None,
+        return self.getUserEventsInPeriodFunc( jawboneurl.getUserTimeZoneUrl, startTime = None, endTime = None,
             userXid = userXid, limit = None)
 
     def get_users_profile(self  ,userXid = "@me"):
-        return self.getUserEventsInPeriodFunc( nudgeurl.getUserProfileUrl, startTime = None, endTime = None,
+        return self.getUserEventsInPeriodFunc( jawboneurl.getUserProfileUrl, startTime = None, endTime = None,
             userXid = userXid, limit = None)
 
     def get_users_photo(self  ,userXid = "@me"):
-        return self.getUserEventsInPeriodFunc( nudgeurl.getUserProfilePhotoUrl, startTime = None, endTime = None,
+        return self.getUserEventsInPeriodFunc( jawboneurl.getUserProfilePhotoUrl, startTime = None, endTime = None,
             userXid = userXid, limit = None)
 
     # bucketSize value is : d , w , m
     # inRange = d
     def get_users_trends(self  ,userXid = "@me" , endDate =  None , bucketSize = "d", inRange = "d"  ,
                          rangeDuration = 730 ):
-        command = nudgeurl.getUserTrendsUrl( userXid = userXid )
+        command = jawboneurl.getUserTrendsUrl( userXid = userXid )
         request_data = {"end_date" : endDate , "bucket_size" : bucketSize, "range" : inRange ,
                         "range_duration" : rangeDuration }
         return self.excuteRequst(command , params = request_data , headers = self.nudgeHeaders)
 
     # types value is : 1 workout, 2 meal, 3 sleep, 4 move, 5 mood, 7 body, if don't set this value, include all of them
     def get_users_events(self  ,userXid = "@me" , startDate = None, types = None , limit = 20 , listDeleted = True ):
-        command = nudgeurl.getUserActivitesURL( userXid = userXid )
+        command = jawboneurl.getUserActivitesUrl( userXid = userXid )
         request_data = {'start_date' : startDate, 'types' : types, 'limit' : limit , "list_deleted" : listDeleted }
         return self.excuteRequst(command , params = request_data , headers = self.nudgeHeaders)
 
     # Result : 1 = awake, 2 = light , 3 = deep
     def get_sleeps_snapshot(self , evtXid ):
-        command = nudgeurl.getSleepsSnapshotUrl( evtXid )
+        command = jawboneurl.getSleepsSnapshotUrl( evtXid )
         return self.excuteRequst(command , params = None , headers = self.nudgeHeaders)
 
     def get_workouts_snapshot(self , evtXid , bucket = None ):
-        command = nudgeurl.getWorkoutSnapshotUrl( evtXid)
+        command = jawboneurl.getWorkoutSnapshotUrl( evtXid)
         request_data = { 'bucket' : bucket }
         return self.excuteRequst(command , params = request_data , headers = self.nudgeHeaders)
 
     def get_moves_snapshot(self , evtXid , bucket = None ):
-        command = nudgeurl.getMovesSnapshotUrl( evtXid)
+        command = jawboneurl.getMovesSnapshotUrl( evtXid)
         request_data = { 'bucket' : bucket }
         return self.excuteRequst(command , params = request_data , headers = self.nudgeHeaders)
 
     def get_feeditems(self , evtXid , bucket = None ):
-        command = nudgeurl.getFeedItemUrl( evtXid)
+        command = jawboneurl.getFeedItemUrl( evtXid)
         request_data = { 'bucket' : bucket }
         return self.excuteRequst(command , params = request_data , headers = self.nudgeHeaders)
 
 if __name__ == "__main__":
-    account = { "email" : "iascchen@gmail.com" , "passwd" : "yourpassword" }
+    account = { "email" : "your@email" , "passwd" : "yourpassword" }
 
     startDate = "20130609"
     endDate =  "20130611"
@@ -243,7 +244,7 @@ if __name__ == "__main__":
     # login
     ret = device.get_users_login(account["email"], account["passwd"])
     print device.auth_info
-    # device.saveJsonData( filename = "/users_login.json" , data = ret)
+    device.saveJsonData( filename = "/users_login.json" , data = ret)
 
     ret = device.get_auth_info(account["email"], account["passwd"])
     print device.auth_info

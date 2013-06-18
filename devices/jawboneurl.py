@@ -52,7 +52,7 @@ def getUserAliasesUrl( userXid = "@me" ):
 def getUserFriendsUrl( userXid = "@me" ):
     return "%s%s" % ( apiHome , ( "users/%s/friends" % userXid) )
 
-def getUserActivitesURL( userXid = "@me" ):
+def getUserActivitesUrl( userXid = "@me" ):
     return "%s%s" % ( apiHome , ( "users/%s/events" % userXid) )
 
 def getUserAcknowledgeUrl( userXid = "@me" ):
@@ -121,7 +121,7 @@ def getExternalFriendsUrl( paramString):
 def getFacebookTokenUpdateUrl():
     return "%s%s" % ( apiHome , "users/@me/auth/facebook")
 
-def getGeoCodeLocationURL():
+def getGeoCodeLocationUrl():
     return "%s%s" % ( apiHome , "places/" )
 
 def getMutualFriendsUrl( paramString):
