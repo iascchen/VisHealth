@@ -10,6 +10,10 @@ GPLv3
 
 20130618
 
+Add weather service of Chinese Cities. Add BMI calculator service.
+
+20130618
+
 Add codoon sports api, hacked from codoon sports+ android 3.3.5
 
 20130613
