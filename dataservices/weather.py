@@ -3,6 +3,7 @@
 __author__ = 'iascchen@gmail.com'
 
 from lxml import etree
+from datetime import date
 import requests
 import json
 import logging
@@ -14,6 +15,7 @@ class WeatherService:
     myHeaders = None
 
     devUserAgent = "panguso_boce"
+    citiesID = None
 
     def __init__(self):
         logging.basicConfig(filename='../logs/log.txt', level=logging.DEBUG)
@@ -54,6 +56,36 @@ class WeatherService:
         request_data = {"city": cityName, "cityid": cityId, "tac": tac}
         return self.excuteGetRequst(command, params=request_data)
 
+    def loadCitiesID(self, filename="weather_city.txt"):
+        if ( self.citiesID == None):
+            self.citiesID = {}
+            f = open(filename, "r")
+            for line in f.readlines():
+                if line.startswith("#"):
+                    continue
+
+                row = line[:-1].split(":")
+                self.citiesID.update({row[1]: row[0]})
+            f.close()
+        # print self.citiesID
+
+    # TODO , implement multithread
+    def get_all_weather(self, filename="weather_city.txt"):
+        self.loadCitiesID(filename)
+
+        datestr = "%s" % date.today()
+        command = "%s%s" % ( self.panguAfHost, "weather/query" )
+
+        weathers = { "date" : datestr , "data" : []}
+        for id in sorted( self.citiesID.keys()):
+            request_data = {"cityid": id}
+            retjson = self.excuteGetRequst(command, params=request_data)
+            weathers["data"].append( retjson )
+
+        filename = "/weather_all_%s.json" % datestr
+        # print weathers
+        self.saveJsonData(filename=filename, data=weathers)
+
 class WeatherServiceTest(unittest.TestCase):
     device = WeatherService()
 
@@ -61,26 +93,30 @@ class WeatherServiceTest(unittest.TestCase):
         ret = self.device.get_weather(cityName="北京")
         self.device.saveJsonData(filename="/weather.json", data=ret)
         # print ret["cityExt"]["city"], ret["cityExt"]["cityid"]
-        self.assertEquals( ret["cityExt"]["city"] , u"北京" )
-        self.assertEquals( ret["cityExt"]["cityid"] , "101010100" )
+        self.assertEquals(ret["cityExt"]["city"], u"北京")
+        self.assertEquals(ret["cityExt"]["cityid"], "101010100")
 
         ret = self.device.get_weather(cityName="朝阳")
         self.device.saveJsonData(filename="/weather_2.json", data=ret)
         # print ret["cityExt"]["city"], ret["cityExt"]["cityid"]
-        self.assertEquals( ret["cityExt"]["city"] , u"朝阳" )
-        self.assertEquals( ret["cityExt"]["cityid"] , "101010300" )
+        self.assertEquals(ret["cityExt"]["city"], u"朝阳")
+        self.assertEquals(ret["cityExt"]["cityid"], "101010300")
 
         ret = self.device.get_weather(cityId="101071201")
         self.device.saveJsonData(filename="/weather_3.json", data=ret)
         # print ret["cityExt"]["city"], ret["cityExt"]["cityid"]
-        self.assertEquals( ret["cityExt"]["city"] , u"朝阳" )
-        self.assertEquals( ret["cityExt"]["cityid"] , "101071201" )
+        self.assertEquals(ret["cityExt"]["city"], u"朝阳")
+        self.assertEquals(ret["cityExt"]["cityid"], "101071201")
 
         ret = self.device.get_weather(tac="021")
         self.device.saveJsonData(filename="/weather_4.json", data=ret)
         # print ret["cityExt"]["city"], ret["cityExt"]["cityid"]
-        self.assertEquals( ret["cityExt"]["city"] , u"上海" )
-        self.assertEquals( ret["cityExt"]["cityid"] , "101020100" )
+        self.assertEquals(ret["cityExt"]["city"], u"上海")
+        self.assertEquals(ret["cityExt"]["cityid"], "101020100")
+
+    def test_get_all_weather(self):
+        self.device.get_all_weather( )
+        pass
 
 if __name__ == "__main__":
-    unittest.main(  )
+    unittest.main()
