@@ -8,9 +8,9 @@ GPLv3
 
 ## Release Info
 
-20130618
+20130619
 
-Add weather service of Chinese Cities. Add BMI calculator service.
+Integrate weather service for Chinese Cities of Panguso.com. Add add BMI calculator.
 
 20130618
 
