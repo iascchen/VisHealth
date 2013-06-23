@@ -5,12 +5,19 @@
 操作步骤如下：
 
 1. 打开[Jawbone.com](https://jawbone.com/ "jawbone.com")网站，登陆。
+
 ![](imgs/jawbone_1.png)
+
 2. 选择屏幕右上角的用户名，选择“设置”菜单。
+
 ![](imgs/jawbone_2.png)
+
 3. 进入“账户”标签，在屏幕下端的“下载UP数据”区域，点击对应年份，下载数据。
+
 ![](imgs/jawbone_3.png)
+
 例如，下载2013年数据得到具有如下格式的csv文件。这个文件中包括以日为颗粒度的汇总数据。
+
 ![](imgs/jawbone_4.png)
 
 具体数据项如下：
