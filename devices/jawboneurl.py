@@ -110,7 +110,7 @@ def getMovesSnapshotUrl( evtXid ):
     return "%s%s" % ( apiHome , ( "moves/%s/snapshot" % evtXid ))
 
 # --------------------------
-# these urls is not used now
+# these urls is not used by jawbone up python api now
 
 def getContactsUploadUrl():
     return "%s%s" % ( apiHome , "users/@me/externalFriends/addressbook" )

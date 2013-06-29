@@ -185,7 +185,17 @@
 
 **Return :** 
 
-返回信息包括 Mood、Move、Sleep、Meals、WorkOut 等活动的分项信息，此处数据仅为对应行为的概述性数据，如果需要更详细的分项数据汇总，需要以 "data"."feed"."xid" 为参数，根据 "data"."feed"."type" 调用对应的接口。
+返回信息包括 Mood、Move、Sleep、Meals、WorkOut 等活动的分项信息，此处数据仅为对应行为的概述性数据，如果需要更详细的分项数据汇总，需要以 "data"."feed"."xid" 为参数（记为 %evtXid% ），根据 "data"."feed"."type" 调用对应的接口。如：
+
+	sleeps/%evtXid%
+	workouts/%evtXid%
+	moves/%evtXid%
+	meals/%evtXid%
+	mood/%evtXid%
+
+	sleeps/%evtXid%/snapshot
+	workouts/%evtXid%/snapshot
+	moves/%evtXid%/snapshot
 
 如果需要换页，可以在"data"."links"."next" 找到换页的URL，如：
 `"data"."links"."next": "/nudge/api/v.1.34/users/RGaCBFg9CsDYVvm2kchbcw/social?page_token=1370439133&limit=20"` 
@@ -993,3 +1003,6 @@ users/%userXid%/feed 这个 API 和 users/%userXid%/social 几乎如出一辙，
 	        "tz": "Asia/Shanghai"
 	    }
 	}
+
+---
+待续。。。
