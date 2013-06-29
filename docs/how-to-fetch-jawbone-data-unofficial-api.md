@@ -1,5 +1,15 @@
 # 获取Jawbone UP中的个人数据（二）非官方API #
 
+---
+
+Author : iascchen(at)gmail(dot)com
+
+Date : 2013-06-20
+
+新浪微博 : [@问天鼓]([@问天鼓](http://www.weibo.com/iascchen)
+
+---
+
 从Jawbone网站上，能够下载UP的个人数据，但是这个数据是以天为单位的汇总数据，如果我们需要更精细的数据，就必须通过程序获取。
 
 Jawbone官方网站宣称已经提供开发API，用于与合作方应用之间进行数据交换。但是这个API在网上见不到。我辈苦逼的码农想玩玩自己的数据，只好另想办法。
@@ -26,5 +36,7 @@ Eric Blue曾经于2011年11月发表过一篇博文[jawbone-up-api-discovery](ht
 
 [8. 运动趋势统计和生命线 ](how-to-fetch-jawbone-data-unofficial-api_8.md)
  
-各位玩的开心！
+其他还有一些社交类、饮食类 API 与用户行为数据相关性不大，不再进行分析。
+
+Jawbone UP 非官方 API 到此为止，祝各位玩的开心！
 
