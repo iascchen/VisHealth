@@ -4808,7 +4808,7 @@ Return :
 
 ### user/%userXid%/band ###
 
-band的含义似乎与lifeline的显示有关，用于显示lifeline中的运动量，时间颗粒度为分钟。（此函数意义为猜测）
+band API 的 POST 请求与 workouts 和 sleeps 数据上传有关。GET 请求可以用来显示设备上传的数据情况，时间颗粒度为分钟。此处我们采用 GET 方式，以获得数据。
 
 ![lifeline](imgs/jawbone_up_6.png)
 
