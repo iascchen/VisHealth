@@ -330,4 +330,4 @@ Return :
 	}
 
 ---
-待续
+[返回](how-to-fetch-jawbone-data-unofficial-api.md)

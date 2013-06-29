@@ -739,6 +739,8 @@
 	    }
 	}
 
+## Users Feeds ##
+
 ### users/%userXid%/feed ###
 
 users/%userXid%/feed 这个 API 和 users/%userXid%/social 几乎如出一辙，唯一差别就是 social API多了个参数 date, 两者的返回参数几乎完全相同
@@ -1004,5 +1006,590 @@ users/%userXid%/feed 这个 API 和 users/%userXid%/social 几乎如出一辙，
 	    }
 	}
 
+## Users Events ##
+
+### users/%userXid%/events ###
+
+users/%userXid%/events 是个非常有用的函数。 利用这个函数，能够获取当前用户的所有 Event， 包括已经被删除的用户事件。同时，这个 API 还有 types 参数，能够限制只返回特定类别 Event。
+
+**Request：**
+
+	GET
+	https://jawbone.com/nudge/api/users/@me/events?list_deleted=True&limit=10
+	https://jawbone.com/nudge/api/users/@me/events?limit=20&start_date=20130609&types=2
+	https://jawbone.com/nudge/api/users/@me/events?types=1%2C3 # 此处逗号被转码为%2C了
+
+**Params：**
+	
+	'start_date' : startDate, # 开始日期，格式为yyyymmdd
+	'types' : types,  # 选择哪种类型的事件。取值为 : 1 workout, 2 meal, 3 sleep, 4 move, 5 mood, 7 body。需要显示多个类型，可以将类型取值用逗号连接。不设置则包括所有类型。此处取值为逆向工程得出，不一定全面。
+	'limit' : limit ,  # 最多返回多少条记录，缺省为20。
+	"list_deleted" : listDeleted # 取值为 True， False。缺省为 False。
+
+**Return :** 
+
+完整JSON示例如下：
+
+	{
+	    "meta": {
+	        "code": 200, 
+	        "message": "OK", 
+	        "user_xid": "RGaCBFg9CsDYVvm2kchbcw", 
+	        "time": 1372431968
+	    }, 
+	    "data": {
+	        "deleted": [
+	            "EJpCkyAtwoOzTldhXELa5Q", 
+	            "EJpCkyAtwoOMMWEHyIFF0Q"
+	        ], 
+	        "items": [
+	            {
+	                "image": "", 
+	                "time_removed": 0, 
+	                "emotions": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "snapshot_image": "/nudge/image/e/1371044854/EJpCkyAtwoPXN30hjKufWg.png", 
+	                "networks": [], 
+	                "time_completed": 1371016848, 
+	                "xid": "EJpCkyAtwoPXN30hjKufWg", 
+	                "title": "\u6b65\u884c", 
+	                "comments": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "details": {
+	                    "tz": "Asia/Shanghai", 
+	                    "goal": 0, 
+	                    "calories": 802.075100205, 
+	                    "km": 2.249, 
+	                    "bmr": 164.075100205, 
+	                    "intensity": 1, 
+	                    "bg_calories": 127.953000784, 
+	                    "meters": 2249, 
+	                    "time": 10800, 
+	                    "bg_active_time": 1871, 
+	                    "steps": 3372, 
+	                    "bmr_calories": 164.075100205
+	                }, 
+	                "shared": true, 
+	                "type": "workout", 
+	                "band_ids": [], 
+	                "time_created": 1371006048, 
+	                "date": 20130612, 
+	                "sub_type": 1, 
+	                "reaction": null, 
+	                "time_updated": 1371044854, 
+	                "route": "", 
+	                "app_generated": false, 
+	                "goals": {
+	                    "steps": 10000, 
+	                    "workout_time": null
+	                }, 
+	                "is_manual": true, 
+	                "is_complete": true, 
+	                "user": {
+	                    "last": "VisHealth", 
+	                    "name": "Tester VisHealth", 
+	                    "short_name": "Tester", 
+	                    "image": "user/image/i/51b4916b03eb185d1c1948a5_RGaCBFg9CsDYVvm2kchbcw_137078820345_2781804_photo.jpeg", 
+	                    "xid": "RGaCBFg9CsDYVvm2kchbcw", 
+	                    "type": "user", 
+	                    "first": "Tester"
+	                }
+	            }, 
+	            {
+	                "time_completed": 1370995140, 
+	                "xid": "EJpCkyAtwoOBmMCiBEugow", 
+	                "band_ids": [
+	                    "23424880A48CD061"
+	                ], 
+	                "title": "9 \u5c0f\u65f6 55 \u5206\u949f", 
+	                "snapshot_image": "/nudge/image/e/1370995674/EJpCkyAtwoOBmMCiBEugow.png", 
+	                "user": {
+	                    "last": "VisHealth", 
+	                    "name": "Tester VisHealth", 
+	                    "short_name": "Tester", 
+	                    "image": "user/image/i/51b4916b03eb185d1c1948a5_RGaCBFg9CsDYVvm2kchbcw_137078820345_2781804_photo.jpeg", 
+	                    "xid": "RGaCBFg9CsDYVvm2kchbcw", 
+	                    "type": "user", 
+	                    "first": "Tester"
+	                }, 
+	                "comments": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "sub_type": 0, 
+	                "date": 20130612, 
+	                "app_generated": false, 
+	                "time_updated": 1370995674, 
+	                "emotions": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "time_created": 1370958101, 
+	                "is_manual": false, 
+	                "shared": false, 
+	                "type": "sleep", 
+	                "networks": [], 
+	                "goals": {
+	                    "total": 27000, 
+	                    "bedtime": null, 
+	                    "deep": null
+	                }, 
+	                "details": {
+	                    "body": 0, 
+	                    "smart_alarm_fire": 1370988000, 
+	                    "awakenings": 1, 
+	                    "light": 20652, 
+	                    "mind": 0, 
+	                    "asleep_time": 1370958959, 
+	                    "deep": 15093, 
+	                    "awake": 1294, 
+	                    "duration": 37039, 
+	                    "tz": "Asia/Shanghai", 
+	                    "quality": 100, 
+	                    "awake_time": 1370995001
+	                }
+	            }, 
+	            {
+	                "time_updated": 1370957155, 
+	                "xid": "EJpCkyAtwoMIuTGkAPvdTw", 
+	                "band_ids": [
+	                    "23424880A48CD061"
+	                ], 
+	                "title": "1 \u5c0f\u65f6 7 \u5206\u949f", 
+	                "snapshot_image": "/nudge/image/e/1370957155/EJpCkyAtwoMIuTGkAPvdTw.png", 
+	                "user": {
+	                    "last": "VisHealth", 
+	                    "name": "Tester VisHealth", 
+	                    "short_name": "Tester", 
+	                    "image": "user/image/i/51b4916b03eb185d1c1948a5_RGaCBFg9CsDYVvm2kchbcw_137078820345_2781804_photo.jpeg", 
+	                    "xid": "RGaCBFg9CsDYVvm2kchbcw", 
+	                    "type": "user", 
+	                    "first": "Tester"
+	                }, 
+	                "comments": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "networks": [], 
+	                "date": 20130611, 
+	                "app_generated": false, 
+	                "time_completed": 1370908500, 
+	                "emotions": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "time_created": 1370902821, 
+	                "is_manual": false, 
+	                "shared": false, 
+	                "type": "sleep", 
+	                "sub_type": 2, 
+	                "goals": {
+	                    "total": 28800, 
+	                    "bedtime": null, 
+	                    "deep": null
+	                }, 
+	                "details": {
+	                    "body": 0, 
+	                    "smart_alarm_fire": 0, 
+	                    "awakenings": 0, 
+	                    "light": 1680, 
+	                    "mind": 0, 
+	                    "asleep_time": 1370903099, 
+	                    "deep": 2340, 
+	                    "awake": 1659, 
+	                    "duration": 5679, 
+	                    "tz": "Asia/Shanghai", 
+	                    "quality": 12, 
+	                    "awake_time": 1370907021
+	                }
+	            }, 
+	            {
+	                "time_updated": 1370957154, 
+	                "xid": "EJpCkyAtwoPgu7Y5xcoEUw", 
+	                "band_ids": [
+	                    "23424880A48CD061"
+	                ], 
+	                "title": "4 \u5c0f\u65f6 23 \u5206\u949f", 
+	                "type": "sleep", 
+	                "user": {
+	                    "last": "VisHealth", 
+	                    "name": "Tester VisHealth", 
+	                    "short_name": "Tester", 
+	                    "image": "user/image/i/51b4916b03eb185d1c1948a5_RGaCBFg9CsDYVvm2kchbcw_137078820345_2781804_photo.jpeg", 
+	                    "xid": "RGaCBFg9CsDYVvm2kchbcw", 
+	                    "type": "user", 
+	                    "first": "Tester"
+	                }, 
+	                "comments": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "networks": [], 
+	                "is_manual": false, 
+	                "app_generated": false, 
+	                "time_completed": 1370898180, 
+	                "emotions": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "time_created": 1370880162, 
+	                "date": 20130611, 
+	                "shared": false, 
+	                "snapshot_image": "/nudge/image/e/1370957154/EJpCkyAtwoPgu7Y5xcoEUw.png", 
+	                "sub_type": 0, 
+	                "goals": {
+	                    "total": 28800, 
+	                    "bedtime": null, 
+	                    "deep": null
+	                }, 
+	                "details": {
+	                    "body": 0, 
+	                    "smart_alarm_fire": 0, 
+	                    "awakenings": 2, 
+	                    "light": 11393, 
+	                    "mind": 0, 
+	                    "asleep_time": 1370881499, 
+	                    "deep": 4408, 
+	                    "awake": 2217, 
+	                    "duration": 18018, 
+	                    "tz": "Asia/Shanghai", 
+	                    "quality": 46, 
+	                    "awake_time": 1370898162
+	                }
+	            }, 
+	            {
+	                "time_updated": 1370812792, 
+	                "xid": "EJpCkyAtwoNhHfcKmXhLDQ", 
+	                "details": {
+	                    "body": 0, 
+	                    "smart_alarm_fire": 0, 
+	                    "awakenings": 0, 
+	                    "light": 13966, 
+	                    "mind": 0, 
+	                    "asleep_time": 1370788739, 
+	                    "deep": 10080, 
+	                    "awake": 806, 
+	                    "duration": 24852, 
+	                    "tz": "Asia/Shanghai", 
+	                    "quality": 78, 
+	                    "awake_time": 1370812534
+	                }, 
+	                "band_ids": [
+	                    "23424880A48CD061"
+	                ], 
+	                "title": "6 \u5c0f\u65f6 40 \u5206\u949f", 
+	                "snapshot_image": "/nudge/image/e/1370812792/EJpCkyAtwoNhHfcKmXhLDQ.png", 
+	                "comments": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "networks": [], 
+	                "is_manual": false, 
+	                "app_generated": false, 
+	                "time_completed": 1370812786, 
+	                "emotions": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "time_created": 1370787934, 
+	                "date": 20130610, 
+	                "shared": false, 
+	                "type": "sleep", 
+	                "sub_type": 0, 
+	                "goals": {
+	                    "total": 28800, 
+	                    "bedtime": null, 
+	                    "deep": null
+	                }, 
+	                "user": {
+	                    "last": "VisHealth", 
+	                    "name": "Tester VisHealth", 
+	                    "short_name": "Tester", 
+	                    "image": "user/image/i/51b4916b03eb185d1c1948a5_RGaCBFg9CsDYVvm2kchbcw_137078820345_2781804_photo.jpeg", 
+	                    "xid": "RGaCBFg9CsDYVvm2kchbcw", 
+	                    "type": "user", 
+	                    "first": "Tester"
+	                }
+	            }, 
+	            {
+	                "image": "", 
+	                "time_removed": 0, 
+	                "emotions": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "snapshot_image": "", 
+	                "networks": [], 
+	                "time_completed": 1370730615, 
+	                "xid": "EJpCkyAtwoPa1a-leTNHQg", 
+	                "title": "\u745c\u4f3d", 
+	                "comments": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "details": {
+	                    "tz": "Asia/Shanghai", 
+	                    "goal": 0, 
+	                    "calories": 89.4861169007, 
+	                    "km": 0.0, 
+	                    "bmr": 27.4861169007, 
+	                    "intensity": 1, 
+	                    "bg_calories": 0, 
+	                    "meters": 0, 
+	                    "time": 1800, 
+	                    "bg_active_time": 0, 
+	                    "steps": 0, 
+	                    "bmr_calories": 27.4861169007
+	                }, 
+	                "shared": true, 
+	                "type": "workout", 
+	                "band_ids": [], 
+	                "time_created": 1370728815, 
+	                "date": 20130609, 
+	                "sub_type": 6, 
+	                "reaction": null, 
+	                "time_updated": 1370732478, 
+	                "route": "", 
+	                "app_generated": false, 
+	                "goals": {
+	                    "steps": 10000, 
+	                    "workout_time": null
+	                }, 
+	                "is_manual": true, 
+	                "is_complete": true, 
+	                "user": {
+	                    "last": "VisHealth", 
+	                    "name": "Tester VisHealth", 
+	                    "short_name": "Tester", 
+	                    "image": "user/image/i/51b4916b03eb185d1c1948a5_RGaCBFg9CsDYVvm2kchbcw_137078820345_2781804_photo.jpeg", 
+	                    "xid": "RGaCBFg9CsDYVvm2kchbcw", 
+	                    "type": "user", 
+	                    "first": "Tester"
+	                }
+	            }, 
+	            {
+	                "time_completed": 1370730588, 
+	                "xid": "EJpCkyAtwoPx-NDQaWEnSw", 
+	                "band_ids": [
+	                    "23424880A48CD061"
+	                ], 
+	                "title": "7 \u5c0f\u65f6 55 \u5206\u949f", 
+	                "type": "sleep", 
+	                "user": {
+	                    "last": "VisHealth", 
+	                    "name": "Tester VisHealth", 
+	                    "short_name": "Tester", 
+	                    "image": "user/image/i/51b4916b03eb185d1c1948a5_RGaCBFg9CsDYVvm2kchbcw_137078820345_2781804_photo.jpeg", 
+	                    "xid": "RGaCBFg9CsDYVvm2kchbcw", 
+	                    "type": "user", 
+	                    "first": "Tester"
+	                }, 
+	                "comments": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "sub_type": 0, 
+	                "date": 20130609, 
+	                "app_generated": false, 
+	                "time_updated": 1370730602, 
+	                "emotions": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "time_created": 1370699857, 
+	                "is_manual": false, 
+	                "shared": false, 
+	                "snapshot_image": "/nudge/image/e/1370730602/EJpCkyAtwoPx-NDQaWEnSw.png", 
+	                "networks": [], 
+	                "goals": {
+	                    "total": 28800, 
+	                    "bedtime": null, 
+	                    "deep": null
+	                }, 
+	                "details": {
+	                    "body": 0, 
+	                    "smart_alarm_fire": 0, 
+	                    "awakenings": 2, 
+	                    "light": 12406, 
+	                    "mind": 0, 
+	                    "asleep_time": 1370700119, 
+	                    "deep": 16136, 
+	                    "awake": 2189, 
+	                    "duration": 30731, 
+	                    "tz": "Asia/Shanghai", 
+	                    "quality": 99, 
+	                    "awake_time": 1370729557
+	                }
+	            }, 
+	            {
+	                "time_completed": 1370644226, 
+	                "xid": "EJpCkyAtwoP5F4HBk72dng", 
+	                "details": {
+	                    "body": 0, 
+	                    "smart_alarm_fire": 0, 
+	                    "awakenings": 0, 
+	                    "light": 0, 
+	                    "mind": 0, 
+	                    "asleep_time": 1370619026, 
+	                    "deep": 0, 
+	                    "awake": 0, 
+	                    "duration": 25200, 
+	                    "tz": "Asia/Shanghai", 
+	                    "quality": 0, 
+	                    "awake_time": 1370644226
+	                }, 
+	                "band_ids": [], 
+	                "title": "7 \u5c0f\u65f6 0 \u5206\u949f", 
+	                "snapshot_image": "", 
+	                "comments": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "networks": [], 
+	                "date": 20130608, 
+	                "app_generated": false, 
+	                "time_updated": 1370732654, 
+	                "emotions": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "time_created": 1370619026, 
+	                "is_manual": true, 
+	                "shared": false, 
+	                "type": "sleep", 
+	                "sub_type": 0, 
+	                "goals": {
+	                    "total": 28800, 
+	                    "bedtime": null, 
+	                    "deep": null
+	                }, 
+	                "user": {
+	                    "last": "VisHealth", 
+	                    "name": "Tester VisHealth", 
+	                    "short_name": "Tester", 
+	                    "image": "user/image/i/51b4916b03eb185d1c1948a5_RGaCBFg9CsDYVvm2kchbcw_137078820345_2781804_photo.jpeg", 
+	                    "xid": "RGaCBFg9CsDYVvm2kchbcw", 
+	                    "type": "user", 
+	                    "first": "Tester"
+	                }
+	            }, 
+	            {
+	                "time_completed": 1370619840, 
+	                "xid": "EJpCkyAtwoOF3sVPoMzjNw", 
+	                "band_ids": [
+	                    "23424880A48CD061"
+	                ], 
+	                "title": "1 \u5c0f\u65f6 29 \u5206\u949f", 
+	                "type": "sleep", 
+	                "user": {
+	                    "last": "VisHealth", 
+	                    "name": "Tester VisHealth", 
+	                    "short_name": "Tester", 
+	                    "image": "user/image/i/51b4916b03eb185d1c1948a5_RGaCBFg9CsDYVvm2kchbcw_137078820345_2781804_photo.jpeg", 
+	                    "xid": "RGaCBFg9CsDYVvm2kchbcw", 
+	                    "type": "user", 
+	                    "first": "Tester"
+	                }, 
+	                "comments": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "networks": [], 
+	                "date": 20130607, 
+	                "app_generated": false, 
+	                "time_updated": 1370645648, 
+	                "emotions": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "time_created": 1370613446, 
+	                "is_manual": false, 
+	                "shared": false, 
+	                "snapshot_image": "/nudge/image/e/1370645648/EJpCkyAtwoOF3sVPoMzjNw.png", 
+	                "sub_type": 2, 
+	                "goals": {
+	                    "total": 28800, 
+	                    "bedtime": null, 
+	                    "deep": null
+	                }, 
+	                "details": {
+	                    "body": 0, 
+	                    "smart_alarm_fire": 0, 
+	                    "awakenings": 0, 
+	                    "light": 2762, 
+	                    "mind": 0, 
+	                    "asleep_time": 1370614439, 
+	                    "deep": 2580, 
+	                    "awake": 1052, 
+	                    "duration": 6394, 
+	                    "tz": "Asia/Shanghai", 
+	                    "quality": 18, 
+	                    "awake_time": 1370619746
+	                }
+	            }, 
+	            {
+	                "time_completed": 1370557817, 
+	                "xid": "BXM3Lg0tIY0DwwLlUXmstA", 
+	                "details": {
+	                    "body": 0, 
+	                    "smart_alarm_fire": 1370557200, 
+	                    "awakenings": 2, 
+	                    "light": 14160, 
+	                    "mind": 0, 
+	                    "asleep_time": 1370533799, 
+	                    "deep": 7225, 
+	                    "awake": 3297, 
+	                    "duration": 24682, 
+	                    "tz": "Asia/Shanghai", 
+	                    "quality": 64, 
+	                    "awake_time": 1370557135
+	                }, 
+	                "band_ids": [
+	                    "23424880A48CD061"
+	                ], 
+	                "title": "5 \u5c0f\u65f6 56 \u5206\u949f", 
+	                "snapshot_image": "/nudge/image/e/1370557855/BXM3Lg0tIY0DwwLlUXmstA.png", 
+	                "comments": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "networks": [], 
+	                "date": 20130607, 
+	                "app_generated": false, 
+	                "time_updated": 1370557855, 
+	                "emotions": {
+	                    "items": [], 
+	                    "size": 0
+	                }, 
+	                "time_created": 1370533135, 
+	                "is_manual": false, 
+	                "shared": false, 
+	                "type": "sleep", 
+	                "sub_type": 0, 
+	                "goals": {
+	                    "total": 28800, 
+	                    "bedtime": null, 
+	                    "deep": null
+	                }, 
+	                "user": {
+	                    "last": "VisHealth", 
+	                    "name": "Tester VisHealth", 
+	                    "short_name": "Tester", 
+	                    "image": "user/image/i/51b4916b03eb185d1c1948a5_RGaCBFg9CsDYVvm2kchbcw_137078820345_2781804_photo.jpeg", 
+	                    "xid": "RGaCBFg9CsDYVvm2kchbcw", 
+	                    "type": "user", 
+	                    "first": "Tester"
+	                }
+	            }
+	        ], 
+	        "earliest": 20130605, 
+	        "size": 10
+	    }
+	}
+
 ---
-待续。。。
+[返回](how-to-fetch-jawbone-data-unofficial-api.md)

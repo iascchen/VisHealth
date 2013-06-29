@@ -2,24 +2,6 @@
 
 # 1. 概述和登陆 #
 
-从Jawbone网站上，能够下载UP的个人数据，但是这个数据是以天为单位的汇总数据，如果我们需要更精细的数据，就必须通过程序获取。
-
-Jawbone官方网站宣称已经提供开发API，用于与合作方应用之间进行数据交换。但是这个API在网上见不到。我辈苦逼的码农想玩玩自己的数据，只好另想办法。
-
-Eric Blue曾经于2011年11月发表过一篇博文[jawbone-up-api-discovery](http://eric-blue.com/2011/11/28/jawbone-up-api-discovery/)，介绍了他通过网络侦听Jawbone UP应用与服务器之间的通讯，破解出的一些非官方API，这些API可以用于获得用户自己的运动数据。时过境迁，Jawbone UP硬件已经更新换代至UP 2，手环版本为6\-1.0.20，手机应用软件也已经升级到了2.6.8版本，Server端版本已经更新至1.34。Eric Blue公布的API部分内容已经过时。
-
-下面的API是对Jawbone UP的Android版本进行了反编译所得到的，并借鉴了Eric Blue的方法，通过对Jawbone UP应用发出的请求进行侦听以确认，错误在所难免。这些API包括：
-
-- 两种login方法
-- UP进入后首屏信息显示所使用的：user score 和 social feeds
-- 获取不同类型的用户时间：
-- 详细记录：包括move, sleep, workout、mood、meal
-- 统计结果数据
-- 用户Profile
-- 朋友列表
- 
-各位玩的开心！
-
 ## 客户端请求基本说明 ##
 
 典型的 Jawbone UP 客户端请求形式如下，其中形如 **v.1.34** 的版本部分用于指明所需的Server端服务版本号，此信息可以省略：
@@ -288,4 +270,4 @@ Token 值为 JSON 内容中的 `"data"."session_uid" : "1BkkscbY2RvUUQXF9TewzzDE
 	}
 
 ---
-待续。。。
+[返回](how-to-fetch-jawbone-data-unofficial-api.md)

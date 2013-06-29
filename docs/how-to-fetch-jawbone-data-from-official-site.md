@@ -1,5 +1,15 @@
 # 获取Jawbone UP中的个人数据（一）官方下载 #
 
+---
+
+Author : iascchen (at) gmail(dot)com
+
+Date : 2013-06-1
+
+新浪微博 : [@问天鼓]([@问天鼓](http://www.weibo.com/iascchen)
+
+---
+
 从Jawbone网站上，能够下载个人数据。这个数据能够满足我们以天为单位，对个人的饮食、运动、睡眠进行统计的需要。
 
 ## 操作步骤 ##
