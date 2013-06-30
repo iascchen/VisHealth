@@ -6,7 +6,7 @@ Author : iascchen (at) gmail(dot)com
 
 Date : 2013-06-1
 
-新浪微博 : [@问天鼓]([@问天鼓](http://www.weibo.com/iascchen)
+新浪微博 : [@问天鼓](http://www.weibo.com/iascchen)
 
 ---
 

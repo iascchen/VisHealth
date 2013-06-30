@@ -4,9 +4,9 @@
 
 Author : iascchen(at)gmail(dot)com
 
-Date : 2013-06-20
+Date : 2013-06-29
 
-新浪微博 : [@问天鼓]([@问天鼓](http://www.weibo.com/iascchen)
+新浪微博 : [@问天鼓](http://www.weibo.com/iascchen)
 
 ---
 
@@ -1261,7 +1261,7 @@ users/%userXid%/feed 这个 API 和 users/%userXid%/social 几乎如出一辙，
 **Request：**
 
 	GET
-	https://jawbone.com/nudge/api//nudge/api/feeditems/Qt_j0hDUsXmXwgN2HMMi9w
+	https://jawbone.com/nudge/api/nudge/api/feeditems/Qt_j0hDUsXmXwgN2HMMi9w
 
 **Params：**
 	
@@ -4816,13 +4816,12 @@ band API 的 POST 请求与 workouts 和 sleeps 数据上传有关。GET 请求�
 	
 	GET
 	https://jawbone.com/nudge/api/user/@me/band
-	https://jawbone.com/nudge/api/user/RGaCBFg9CsDYVvm2kchbcw/band?start_time=1370707200&limit=100&end_time=1370966399
+	https://jawbone.com/nudge/api/user/RGaCBFg9CsDYVvm2kchbcw/band?start_time=1370707200&end_time=1370966399
 
 **Params：**
 
 	'start_time' : startTime, #start_time为 long 型时间，即从1970年以来的秒数，可以不填
 	'end_time' : endTime,     #end_time为 long 型时间，即从1970年以来的秒数，可以不填
-	'limit' : limit           #最多返回结果条数限制
 
 **Return :**
 

@@ -659,13 +659,12 @@ band API 的 POST 请求与 workouts 和 sleeps 数据上传有关。GET 请求�
 	
 	GET
 	https://jawbone.com/nudge/api/user/@me/band
-	https://jawbone.com/nudge/api/user/RGaCBFg9CsDYVvm2kchbcw/band?start_time=1370707200&limit=100&end_time=1370966399
+	https://jawbone.com/nudge/api/user/RGaCBFg9CsDYVvm2kchbcw/band?start_time=1370707200&end_time=1370966399
 
 **Params：**
 
 	'start_time' : startTime, #start_time为 long 型时间，即从1970年以来的秒数，可以不填
 	'end_time' : endTime,     #end_time为 long 型时间，即从1970年以来的秒数，可以不填
-	'limit' : limit           #最多返回结果条数限制
 
 **Return :**
 

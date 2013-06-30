@@ -952,7 +952,7 @@ users/%userXid%/feed 这个 API 和 users/%userXid%/social 几乎如出一辙，
 **Request：**
 
 	GET
-	https://jawbone.com/nudge/api//nudge/api/feeditems/Qt_j0hDUsXmXwgN2HMMi9w
+	https://jawbone.com/nudge/api/nudge/api/feeditems/Qt_j0hDUsXmXwgN2HMMi9w
 
 **Params：**
 	
