@@ -95,31 +95,6 @@ Access Token 值为 JSON 内容中的 `"access_token" : "4836c512060faa347937309
 
 ---
 
-## 获得最新可用 Android 软件版本信息 ##
-
-**Request：**
-
-	GET	
-	http://static.codoon.com/app/android/version_run.xml
-
-**Params：**
-	
-	无
-
-**Return :**
-
-完整XML示例如下：
-	
-	<client>
-		<version>53</version>
-		<date>2013-07-10 18:33:59</date>
-		<description>&#21653;&#21658;&#36816;&#21160;+&#23458;&#25143;&#31471;3.3.8</description>
-		<app_name>codoonsportsv3.3.8.apk</app_name>
-		<app_url>http://static.codoon.com/app/android/codoonsports.apk</app_url>
-	</client>
-
----
-
 ## 获得用户基本信息凭证 ##
 
 从数据上看，用户基本信息凭证所包含的数据主要在软件的“更多”页面中显示。
@@ -2144,6 +2119,31 @@ t 的取值包括： j 快走，s 慢走，c 放松，m 慢跑，n 走路等。
 	    }, 
 	    "description": ""
 	}
+
+---
+
+## 获得最新可用 Android 软件版本信息 ##
+
+**Request：**
+
+	GET	
+	http://static.codoon.com/app/android/version_run.xml
+
+**Params：**
+	
+	无
+
+**Return :**
+
+完整XML示例如下：
+	
+	<client>
+		<version>53</version>
+		<date>2013-07-10 18:33:59</date>
+		<description>&#21653;&#21658;&#36816;&#21160;+&#23458;&#25143;&#31471;3.3.8</description>
+		<app_name>codoonsportsv3.3.8.apk</app_name>
+		<app_url>http://static.codoon.com/app/android/codoonsports.apk</app_url>
+	</client>
 
 ---
 

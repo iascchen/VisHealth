@@ -217,16 +217,14 @@ if __name__ == "__main__":
 
     # login
     logined = device.get_users_login(account["email"], account["passwd"])
+    print device.auth_info
     device.saveJsonData( filename = "/users_token.json" , data = logined)
-
-    # Latest App version
-    versionInfo = device.version_run_xml()
-    device.saveXmlData( filename = "/version_run.xml" , data = versionInfo)
 
     # user information
     credentials = device.verify_credentials()
     device.saveJsonData( filename = "/verify_credentials.json" , data = credentials)
 
+    # records
     growingPoint = device.get_user_growing_point_related( )
     device.saveJsonData( filename = "/user_growing_point_related.json" , data = growingPoint)
 
@@ -244,7 +242,7 @@ if __name__ == "__main__":
     device.saveJsonData( filename = "/route_log_0Parts.json" , data = routes)
     routes = device.get_route_log( productId = imei )
     device.saveJsonData( filename = "/route_log.json" , data = routes)
-    routeId = routes["data"][1]["route_id"]
+    routeId = routes["data"][0]["route_id"]
     route = device.get_single_log( routeId = routeId )
     device.saveJsonData( filename = "/single_log.json" , data = route)
 
@@ -285,6 +283,10 @@ if __name__ == "__main__":
     # air quality
     air = device.get_air_quality( cityName = "北京" )
     device.saveJsonData( filename = "/air_quality.json" , data = air)
+
+    # Latest App version
+    versionInfo = device.version_run_xml()
+    device.saveXmlData( filename = "/version_run.xml" , data = versionInfo)
 
     # access other info from codoon site
     device.get_misc_mobile( )
