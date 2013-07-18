@@ -2,12 +2,12 @@
 # _*_ coding: utf-8 _*_
 __author__ = 'iascchen@gmail.com'
 
-import requests
+from lxml import etree
 from requests.auth import HTTPBasicAuth
+import requests
 import json
 import codoonurl
 import logging
-from lxml import etree
 
 class DeviceCodoon:
     auth_info = None
@@ -27,8 +27,7 @@ class DeviceCodoon:
     def logCommand(self , command , ret , headers ):
         # tmp = { "cmd" : command , "ret" : json.dumps(retJson) , "hed" : headers }
         # logging.debug( tmp )
-
-        logging.debug( ret , headers )
+        logging.debug( ret )
 
     def saveJsonData(self , filename, data):
         f = open("../data/codoon/%s" % filename, "w")
@@ -44,8 +43,8 @@ class DeviceCodoon:
     def excuteGetRequstWithCookies(self , command , params = None, cookies = None):
         print "Get : " , command
         response = requests.get(command , params = params ,  headers = self.codoonHeaders , cookies = cookies)
-        content = response.json
-        self.logCommand( command , content , response.headers )
+        self.logCommand( command , response.content , response.headers )
+        content = response.json()
 
         if( 200 != response.status_code):
             print "StatusCode : " , response.status_code
@@ -55,8 +54,8 @@ class DeviceCodoon:
     def excuteGetRequst(self , command , params = None):
         print "Get : " , command
         response = requests.get(command , params = params ,  headers = self.codoonHeaders)
-        content = response.json
-        self.logCommand( command , content , response.headers )
+        self.logCommand( command , response.content , response.headers )
+        content = response.json()
 
         if( 200 != response.status_code):
             print "StatusCode : " , response.status_code
@@ -66,8 +65,8 @@ class DeviceCodoon:
     def excutePostRequst(self , command , data = None):
         print "Post : " , command
         response = requests.post(command , data = json.dumps(data),  headers = self.codoonHeaders )
-        content = response.json
-        self.logCommand( command , content , response.headers )
+        self.logCommand( command , response.content , response.headers )
+        content = response.json()
 
         if( 200 != response.status_code):
             print "StatusCode : " , response.status_code
@@ -84,8 +83,8 @@ class DeviceCodoon:
 
         auth = HTTPBasicAuth(self.httpClientKey, self.httpClientSecret)
         response = requests.post( command , data = request_data , headers = self.codoonHeaders , auth = auth )
-        content = response.json
-        self.logCommand( command , content , response.headers )
+        self.logCommand( command , response.content , response.headers )
+        content = response.json()
 
         if( 200 != response.status_code):
             print response.status_code
@@ -121,7 +120,8 @@ class DeviceCodoon:
         if( 200 != response.status_code):
             print "StatusCode : " , response.status_code
 
-        self.codoonCookies = response.cookies
+        self.codoonCookies = response.history[len(response.history) - 1].cookies
+        # print self.codoonCookies
 
     # This method will access www.codoon.com , so it must called after get_misc_mobile
     def get_user_statistic(self):
@@ -166,6 +166,7 @@ class DeviceCodoon:
         request_data = {"route_id" : routeId }
         return self.excutePostRequst(command , data = request_data)
 
+    #  excludes IDs . if the value is set as "3,4" will return the record which ID is NOT 3 and 4
     def sports_program_manifest_for_codoon(self, programIds):
         command = codoonurl.getSportsProgramManifestUrl()
         request_data = {"ids" : programIds }
@@ -215,65 +216,77 @@ if __name__ == "__main__":
     device = DeviceCodoon ()
 
     # login
-    ret = device.get_users_login(account["email"], account["passwd"])
-    device.saveJsonData( filename = "/users_token.json" , data = ret)
+    logined = device.get_users_login(account["email"], account["passwd"])
+    device.saveJsonData( filename = "/users_token.json" , data = logined)
 
-    ret = device.verify_credentials()
-    device.saveJsonData( filename = "/verify_credentials.json" , data = ret)
+    # Latest App version
+    versionInfo = device.version_run_xml()
+    device.saveXmlData( filename = "/version_run.xml" , data = versionInfo)
 
-    ret = device.version_run_xml()
-    device.saveXmlData( filename = "/version_run.xml" , data = ret)
+    # user information
+    credentials = device.verify_credentials()
+    device.saveJsonData( filename = "/verify_credentials.json" , data = credentials)
 
-    device.get_misc_mobile( )
-    ret = device.get_user_statistic(  )
-    device.saveJsonData( filename = "/user_statistic.json" , data = ret)
+    growingPoint = device.get_user_growing_point_related( )
+    device.saveJsonData( filename = "/user_growing_point_related.json" , data = growingPoint)
 
-    ret = device.get_user_medal( )
-    device.saveJsonData( filename = "/user_medal.json" , data = ret)
+    record = device.gps_highest_record( )
+    device.saveJsonData( filename = "/gps_highest_record.json" , data = record)
 
-    ret = device.get_user_growing_point_related( )
-    device.saveJsonData( filename = "/user_growing_point_related.json" , data = ret)
+    medal = device.get_user_medal( )
+    device.saveJsonData( filename = "/user_medal.json" , data = medal)
 
-    ret = device.get_tracker_goal(  )
-    device.saveJsonData( filename = "/tracker_goal.json" , data = ret)
+    statistic = device.gps_statistic( startDate , endDate )
+    device.saveJsonData( filename = "/gps_statistic.json" , data = statistic)
 
-    ret = device.gps_highest_record( )
-    device.saveJsonData( filename = "/gps_highest_record.json" , data = ret)
+    # workout history
+    routes = device.get_route_log( productId = imei , isPart = 0 )
+    device.saveJsonData( filename = "/route_log_0Parts.json" , data = routes)
+    routes = device.get_route_log( productId = imei )
+    device.saveJsonData( filename = "/route_log.json" , data = routes)
+    routeId = routes["data"][1]["route_id"]
+    route = device.get_single_log( routeId = routeId )
+    device.saveJsonData( filename = "/single_log.json" , data = route)
 
-    ret = device.get_mobile_portraits( )
-    device.saveJsonData( filename = "/mobile_portraits.json" , data = ret)
+    # mobile portraits
+    portraits = device.get_mobile_portraits( )
+    device.saveJsonData( filename = "/mobile_portraits.json" , data = portraits)
 
-    ret = device.get_route_log( productId = imei )
-    device.saveJsonData( filename = "/route_log.json" , data = ret)
-    routeId = ret["data"][0]["route_id"]
-    ret = device.get_single_log( routeId = routeId )
-    device.saveJsonData( filename = "/single_log.json" , data = ret)
+    tgoal = device.get_tracker_goal(  )
+    device.saveJsonData( filename = "/tracker_goal.json" , data = tgoal)
 
-    ret = device.gps_statistic( startDate , endDate )
-    device.saveJsonData( filename = "/gps_statistic.json" , data = ret)
+    tsummary = device.get_tracker_summary( endDate = endDate, daysBack = 3)
+    device.saveJsonData( filename = "/tracker_summary.json" , data = tsummary)
 
-    ret = device.sports_program_manifest_for_codoon( programIds = "" )
-    device.saveJsonData( filename = "/sports_program_manifest_for_codoon.json" , data = ret)
-    programId = ret["data"][0]["id"]
-    ret = device.sports_program_detail( programId = programId )
-    device.saveJsonData( filename = "/sports_program_detail.json" , data = ret)
+    tdata = device.get_tracker_data( checkDate )
+    device.saveJsonData( filename = "/tracker_data.json" , data = tdata)
 
-    ret = device.gps_statistic( startDate , endDate )
-    device.saveJsonData( filename = "/gps_statistic.json" , data = ret)
+    sleep = device.get_sleep_data( checkDate )
+    device.saveJsonData( filename = "/sleep_data.json" , data = sleep)
 
-    ret = device.get_sleep_data( checkDate )
-    device.saveJsonData( filename = "/sleep_data.json" , data = ret)
-
-    ret = device.get_tracker_data( checkDate )
-    device.saveJsonData( filename = "/tracker_data.json" , data = ret)
-
-    ret = device.get_tracker_summary( endDate = endDate, daysBack = 30)
-    device.saveJsonData( filename = "/tracker_summary.json" , data = ret)
-
-    ret = device.get_air_quality( cityName = "北京" )
-    device.saveJsonData( filename = "/air_quality.json" , data = ret)
-
+    # social
     # Bug : if hobby is Chinese , will return 500 error, :(
     # ret = device.people_surrounding( point = point , gender = "1" , hobby = "跑步" , page = 1) will return 500
-    ret = device.people_surrounding( point = point , gender = 2 , hobby = "" , page = 1)
-    device.saveJsonData( filename = "/people_surrounding.json" , data = ret)
+    peoples = device.people_surrounding( point = point , gender = "1" , hobby = "")
+    device.saveJsonData( filename = "/people_surrounding_Male.json" , data = peoples)
+
+    peoples = device.people_surrounding( point = point , gender = 2 , hobby = "" , page = 1)
+    device.saveJsonData( filename = "/people_surrounding.json" , data = peoples)
+
+    # program
+    programs = device.sports_program_manifest_for_codoon( programIds = "3,4" ) # will return the record which ID is NOT 3 and 4
+    device.saveJsonData( filename = "/sports_program_manifest_for_codoon_exclude34.json" , data = programs)
+    programs = device.sports_program_manifest_for_codoon( programIds = "" )
+    device.saveJsonData( filename = "/sports_program_manifest_for_codoon.json" , data = programs)
+    programId = programs["data"][0]["id"]
+    program = device.sports_program_detail( programId = programId )
+    device.saveJsonData( filename = "/sports_program_detail.json" , data = program)
+
+    # air quality
+    air = device.get_air_quality( cityName = "北京" )
+    device.saveJsonData( filename = "/air_quality.json" , data = air)
+
+    # access other info from codoon site
+    device.get_misc_mobile( )
+    wwwStatistic = device.get_user_statistic( )
+    device.saveJsonData( filename = "/user_statistic.json" , data = wwwStatistic)
