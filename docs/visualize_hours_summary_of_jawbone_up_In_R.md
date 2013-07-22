@@ -301,7 +301,7 @@ bucketHeatmap 将以小时 Hour 为时间颗粒度，聚合所需展示的数据
 	  	pic
 	}
 	
-显示按小时的可视化展现。为了避免单日运动量特别大的日期，影响可视化展现效果，在这里，我们使用了
+显示按小时的可视化展现。为了避免单日运动量特别大的日期，影响可视化展现效果，在这里，对数据使用了 log2 进行处理。
 
 	pic4 <- bucketHeatmap( band , valueCol = "steps", picTitle = "Heatmap in hour : Steps" , islog2 = TRUE)
 	ggsave(plot = pic4, filename = "steps_in_hour_by_mday_heatmap.png")
