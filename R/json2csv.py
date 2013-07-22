@@ -65,9 +65,59 @@ class Json2Csv:
             print str
             output.write( str )
 
+    def filterFileds(self , keys , ignoreSet ):
+        tmpkeys = keys
+        for k in ignoreSet:
+            tmpkeys.remove(k)
+        return sorted( tmpkeys )
+
+    def parseJawboneSleeps(self , path , filename ):
+        ignoredFieldSet = ("app_generated", "time_updated" , "band_ids" , "shared", "snapshot_image" , "networks" ,
+                           "user" , "details" , "xid" , "title" , "type")
+        ignoredDetailsFieldSet = ( "body" , "tz")
+
+        fn = "%s%s.json" % ( path , filename )
+        ofn = "%s.csv" % ( filename )
+
+        input = open( fn , 'r' )
+        str = input.read()
+        v = json.loads(str)
+
+        output = open( ofn , 'w' )
+        datas = v["data"]["items"]
+
+        tmps = datas[0]
+        print tmps.keys()
+        headerKeys = self.filterFileds( tmps.keys() , ignoredFieldSet )
+        header = self.list2string(headerKeys)[:-1]
+        print header
+
+        tmpDetails = datas[0]["details"]
+        detailsHeaderKeys = self.filterFileds( tmpDetails.keys() , ignoredDetailsFieldSet )
+        header = "%s,%s" % (header , self.list2string(detailsHeaderKeys))
+        print header
+
+        output.write( header )
+
+        for tmps in datas:
+            stmp = ""
+            for key in headerKeys:
+                stmp = "%s,%s" % ( stmp , tmps[ key ])
+
+            tmpsDetails = tmps["details"]
+            for key in detailsHeaderKeys:
+                stmp = "%s,%s" % ( stmp , tmpsDetails[ key ])
+
+            str = "%s\n" % (stmp[1:])
+            print str
+            output.write( str )
+
 if __name__ == "__main__":
     datapath = "../data/jawboneup/"
 
     trans = Json2Csv()
-    trans.parseJawboneBand( path = datapath , filename = "users_band_start" )
-    trans.parseJawboneTrends( path = datapath , filename = "users_trends-day" )
+    # trans.parseJawboneBand( path = datapath , filename = "users_band_start" )
+    # trans.parseJawboneTrends( path = datapath , filename = "users_trends-day" )
+
+    trans.parseJawboneBand( path = datapath , filename = "users_band_1hour" )
+    trans.parseJawboneSleeps( path = datapath , filename = "users_sleeps_1hour" )

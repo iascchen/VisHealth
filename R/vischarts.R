@@ -42,7 +42,7 @@ bucketBar <- function( data , dateCol = "date" , valueCol = "steps" , statics = 
 	if( is.na(facetCol) )
 		data.mtx <- tapply(data[ , valueCol ] , list( data$sumby ) , statics)
 	else
-		data.mtx <- tapply(data[ , valueCol ] , list(data[ , facetCol ] , data$sumby) , sum)
+		data.mtx <- tapply(data[ , valueCol ] , list(data[ , facetCol ] , data$sumby) , statics)
 
 	data.mtx [is.na(data.mtx )]= 0
 	
@@ -80,12 +80,12 @@ bucketBar <- function( data , dateCol = "date" , valueCol = "steps" , statics = 
   	pic
 }
 
-pic1 <- bucketBar( band , facetCol = "aerobic" , valueCol = "calories" , bucketSize = "hour")
-ggsave(plot = pic1, filename = "calories_in_hour_by_aerobic.png")
+pic1 <- bucketBar( band , facetCol = "aerobic" , valueCol = "steps" , bucketSize = "hour")
+ggsave(plot = pic1, filename = "steps_in_hour_by_aerobic.png" , height=5 , width=7)
 
-pic2 <- bucketBar( band , facetCol = "wday" , valueCol = "calories" , bucketSize = "hour" , 
-	picTitle = "bucketBar in weekday : calories, facet by hour")
-ggsave(plot = pic2, filename = "calories_in_hour_by_wday.png")
+pic2 <- bucketBar( band , facetCol = "wday" , valueCol = "calories" , bucketSize = "hour",
+	picTitle = "bucketBar in weekday : mean calories, facet by hour")
+ggsave(plot = pic2, filename = "calories_in_hour_by_wday.png", height=4 , width=14)
 
 pic3 <- bucketBar( band , facetCol = "mday" , valueCol = "steps" , bucketSize = "hour" , 
 	picTitle = "bucketBar in hour : Steps, facet by Day")
