@@ -248,10 +248,10 @@ sleeps.clean$s_deep <- as.numeric( sleeps.clean$s_deep )
 sleeps.clean$s_duration <- as.numeric( sleeps.clean$s_duration )
 sleeps.clean <- subset( sleeps.clean , s_light > 0.1  )
 
-pic7 <- bucketBar( sleeps.clean , valueCol = "q" , bucketSize = "mday", statics = "mean")
+pic7 <- bucketBar( sleeps.clean , valueCol = "q" , bucketSize = "mday", statics = "mean" , picTitle = "Days in Month")
 ggsave(plot = pic7, filename = "sleep_q_bar.png")
 
-pic8 <- calendarHeatmap(  sleeps.clean , valueCol = "q", picTitle = "Heatmap of deep sleep percent" , islog2 = FALSE , isguide = TRUE)
+pic8 <- calendarHeatmap(  sleeps.clean , valueCol = "q", picTitle = "Heatmap" , islog2 = FALSE , isguide = TRUE)
 ggsave(plot = pic8, filename = "sleep_q_calendarheatmap.png")
 
 # add them in one page
@@ -261,5 +261,5 @@ g1 <- tableGrob(summary( sleeps.clean[,2:5], digits = 2 ))
 g2 <- arrangeGrob(g1, pic7, ncol=2)
 
 png(file = "sleep_q_all.png", bg = "transparent" , width = 800, height = 800, units = "px")
-	grid.arrange(pic8, g2,  ncol=1, main="Sleeps")
+	grid.arrange(pic8, g2,  ncol=1, main="Sleeps Quality = Deep / Duration")
 dev.off()
