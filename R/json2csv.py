@@ -65,6 +65,9 @@ class Json2Csv:
             print str
             output.write( str )
 
+        input.close()
+        output.close()
+
     def filterFileds(self , keys , ignoreSet ):
         tmpkeys = keys
         for k in ignoreSet:
@@ -112,12 +115,47 @@ class Json2Csv:
             print str
             output.write( str )
 
+        input.close()
+        output.close()
+
+    def parseJawboneSleepsnaps(self , path , dates , tofile):
+        ofn = "%s.csv" % tofile
+        output = open( ofn , 'w' )
+
+        header = "date,ss_time,ss_type\n"
+        output.write( header )
+
+        for d in dates:
+            fn = "%ssleepsnap_%s.json" % ( path , d)
+
+            input = open( fn , 'r' )
+            str = input.read()
+            v = json.loads(str)
+
+            datas = v["data"]
+            for tmps in datas:
+                str = "%s,%s,%d\n" % ( d, tmps[0] , tmps[1] )
+                print str
+                output.write( str )
+
+            input.close()
+
+        output.close()
+
 if __name__ == "__main__":
     datapath = "../data/jawboneup/"
 
     trans = Json2Csv()
-    # trans.parseJawboneBand( path = datapath , filename = "users_band_start" )
-    # trans.parseJawboneTrends( path = datapath , filename = "users_trends-day" )
 
+    trans.parseJawboneBand( path = datapath , filename = "users_band_start" )
+
+    trans.parseJawboneTrends( path = datapath , filename = "users_trends-day" )
+    '''
     trans.parseJawboneBand( path = datapath , filename = "users_band_1hour" )
     trans.parseJawboneSleeps( path = datapath , filename = "users_sleeps_1hour" )
+
+    trans.parseJawboneBand( path = datapath , filename = "users_band_after0716" )
+    trans.parseJawboneSleeps( path = datapath , filename = "users_sleeps_after0716" )
+    sleepsnaps = [ "20130716" , "20130717" , "20130718", "20130719", "20130720", "20130721", "20130722"]
+    trans.parseJawboneSleepsnaps( path = datapath , dates = sleepsnaps , tofile = "sleepsnaps_after0716" )
+    '''

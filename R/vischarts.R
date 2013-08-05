@@ -179,7 +179,7 @@ calendarHeatmap <- function( data , dateCol = "date" , valueCol = "steps" , stat
 
   	pic <- ggplot(m, aes( weekdayf, week, fill = values)) +
   		geom_tile(color="white", size= 1 ) +
-  		facet_wrap(~ monthf ,nrow=3) +
+  		# facet_wrap(~ monthf ,nrow=3) +
   		theme_bw() + 
   		xlab("") +
   		ylab("Week of Year") +
@@ -237,12 +237,29 @@ setwd("D:\\PythonWorkspaces\\VisHealth\\R")
 trends.daily <- read.csv("users_trends-day.csv" , as.is=TRUE)
 names( trends.daily )
 sleeps <- trends.daily[ , c( "datestr" , "s_light" , "s_deep" , "s_duration" ) ]
-sleeps.clean <- subset( sleeps , ! (is.na( s_duration ) | is.na( s_deep ) | ( s_duration == 0) | ( s_deep == 0) | ( s_deep == "None" ) | ( s_duration == "None" ) ) )
+sleeps.clean <- subset( sleeps , ! (is.na( s_duration ) | is.na( s_deep ) | ( s_duration == 0) | ( s_deep == 0) 
+	| ( s_deep == "None" ) | ( s_duration == "None" ) ) )
 sleeps.clean$q <- as.numeric(sleeps.clean$s_deep) / as.numeric(sleeps.clean$s_duration)
 
 sleeps.clean$date <- strptime ( sleeps.clean$datestr , format="%Y%m%d" )
-pic7 <- bucketBar( sleeps.clean , valueCol = "q" , bucketSize = "mday")
-ggsave(plot = pic7, filename = "sleep_q.png")
+
+sleeps.clean$s_light <- as.numeric( sleeps.clean$s_light )
+sleeps.clean$s_deep <- as.numeric( sleeps.clean$s_deep )
+sleeps.clean$s_duration <- as.numeric( sleeps.clean$s_duration )
+sleeps.clean <- subset( sleeps.clean , s_light > 0.1  )
+
+pic7 <- bucketBar( sleeps.clean , valueCol = "q" , bucketSize = "mday", statics = "mean")
+ggsave(plot = pic7, filename = "sleep_q_bar.png")
 
 pic8 <- calendarHeatmap(  sleeps.clean , valueCol = "q", picTitle = "Heatmap of deep sleep percent" , islog2 = FALSE , isguide = TRUE)
 ggsave(plot = pic8, filename = "sleep_q_calendarheatmap.png")
+
+# add them in one page
+
+library(gridExtra) 
+g1 <- tableGrob(summary( sleeps.clean[,2:5], digits = 2 ))
+g2 <- arrangeGrob(g1, pic7, ncol=2)
+
+png(file = "sleep_q_all.png", bg = "transparent" , width = 800, height = 800, units = "px")
+	grid.arrange(pic8, g2,  ncol=1, main="Sleeps")
+dev.off()
