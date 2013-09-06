@@ -243,16 +243,18 @@ class CodoonRoute2Gpx:
     def trans(self , route ):
         points = route["data"]["points"]
 
-        gpx = gpxpy.gpx.GPX()
-        # Create first track in our GPX:
-        gpx_route = gpxpy.gpx.GPXRoute()
-
-        # Create points:
+        # Calculate offset of start point
         lat = points[0]["latitude"]
         lon = points[0]["longitude"]
 
         realoffset = self.justifyCityOffset( float(lat) ,float(lon) )
         print realoffset
+
+        realoffset = (0 ,0 )
+
+        gpx = gpxpy.gpx.GPX()
+        # Create route in our GPX:
+        gpx_route = gpxpy.gpx.GPXRoute()
 
         i = 1
         for p in points:
@@ -369,4 +371,4 @@ if __name__ == "__main__":
     route = device.get_single_log( routeId = routeId )
     device.saveJsonData( filename = "/single_log_20130817.json" , data = route)
     gtx = trans.trans( route = route )
-    device.saveXmlData( filename = "/single_log_20130817.gpx" , data = gtx)
+    device.saveXmlData( filename = "/single_log_20130817_shift.gpx" , data = gtx)
