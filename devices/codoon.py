@@ -369,4 +369,4 @@ if __name__ == "__main__":
     route = device.get_single_log( routeId = routeId )
     device.saveJsonData( filename = "/single_log_20130817.json" , data = route)
     gtx = trans.trans( route = route )
-    device.saveXmlData( filename = "/single_log_20130817_shift.gpx" , data = gtx)
+    device.saveXmlData( filename = "/single_log_20130817.gpx" , data = gtx)
