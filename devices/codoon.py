@@ -250,8 +250,6 @@ class CodoonRoute2Gpx:
         realoffset = self.justifyCityOffset( float(lat) ,float(lon) )
         print realoffset
 
-        realoffset = (0 ,0 )
-
         gpx = gpxpy.gpx.GPX()
         # Create route in our GPX:
         gpx_route = gpxpy.gpx.GPXRoute()
