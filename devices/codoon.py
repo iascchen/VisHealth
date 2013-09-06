@@ -8,6 +8,10 @@ import requests
 import json
 import codoonurl
 import logging
+import fileinput
+import gpxpy
+import gpxpy.gpx
+from time import strptime
 
 class DeviceCodoon:
     auth_info = None
@@ -203,6 +207,71 @@ class DeviceCodoon:
         request_data = {"point" : point , "gender" : gender , "hobby" : hobby , "page" : page }
         return self.excutePostRequst(command , data = request_data)
 
+DATE_FORMAT = '%Y-%m-%dT%H:%M:%S'
+CITY_OFFSET = "city_offset_txt.txt"
+
+class CodoonRoute2Gpx:
+    offsetList = []
+
+    # load city shift offset data file
+    def loadCityOffset(self ):
+        fn = CITY_OFFSET
+        for line in fileinput.FileInput(fn):
+            cityInfo = line[:-1].split(";")
+
+            city = cityInfo[0].split(",")
+            offset = cityInfo[1].split(",")
+            self.offsetList.append( (city , offset) )
+            # print self.offsetList
+
+    # computing shift offset
+    def justifyCityOffset(self , lat ,lon):
+        if len( self.offsetList ) == 0 :
+            self.loadCityOffset()
+
+        nearest = 180 ** 2 + 180 ** 2
+
+        realoffset = None
+        for c in self.offsetList:
+            distance = (float(c[0][0]) - lat) ** 2 + (float(c[0][1]) - lon) ** 2
+            if distance < nearest :
+                nearest = distance
+                realoffset = c
+
+        return realoffset[1]
+
+    def trans(self , route ):
+        points = route["data"]["points"]
+
+        gpx = gpxpy.gpx.GPX()
+        # Create first track in our GPX:
+        gpx_route = gpxpy.gpx.GPXRoute()
+
+        # Create points:
+        lat = points[0]["latitude"]
+        lon = points[0]["longitude"]
+
+        realoffset = self.justifyCityOffset( float(lat) ,float(lon) )
+        print realoffset
+
+        i = 1
+        for p in points:
+            tmpname = "#%5d" % i
+            tmptime = strptime( p["time_stamp"] , DATE_FORMAT )
+            lat = float(p["latitude"]) + float(realoffset[0])
+            lon = float(p["longitude"]) + float(realoffset[1])
+
+            gpx_point = gpxpy.gpx.GPXRoutePoint( name = tmpname , longitude = lon , latitude = lat ,
+                elevation = p["elevation"] , time = tmptime )
+            # print gpx_point
+            gpx_route.points.append( gpx_point )
+            i = i + 1
+
+        gpx.routes.append(gpx_route)
+
+        # print 'Created GPX:', gpx.to_xml()
+        return gpx.to_xml()
+
 if __name__ == "__main__":
     account = { "email" : "your@email" , "passwd" : "yourpassword" }
 
@@ -292,3 +361,12 @@ if __name__ == "__main__":
     device.get_misc_mobile( )
     wwwStatistic = device.get_user_statistic( )
     device.saveJsonData( filename = "/user_statistic.json" , data = wwwStatistic)
+
+    # Trans Codoon GPS Data to GPX format
+    routeId = "03e1cd1e-07b1-11e3-b50f-00163e020001"
+    trans = CodoonRoute2Gpx()
+    trans.loadCityOffset()
+    route = device.get_single_log( routeId = routeId )
+    device.saveJsonData( filename = "/single_log_20130817.json" , data = route)
+    gtx = trans.trans( route = route )
+    device.saveXmlData( filename = "/single_log_20130817.gpx" , data = gtx)
