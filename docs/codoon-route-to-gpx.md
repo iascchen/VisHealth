@@ -261,9 +261,14 @@ gpxpy Bug 修正， gpx.py 文件
         # print 'Created GPX:', gpx.to_xml()
         return gpx.to_xml()
 
+所生成的数据文件参见： [single_log_20130817_track.gpx](single_log_20130817_track.gpx)
+[single_log_20130817_route.gpx](single_log_20130817_route.gpx)。
+
 使用 Track 格式的 GPX 文件，能够将数据导入 Heiaheia 网站，能够正确显示轨迹、里程、以及时长。
 
 但是，还有一个问题，文件中Track记录为8月份的数据，并没有被自动放到8月份去，而是放在了当前 Walk 创建时所设定的日期：10月8日。
+
+
 
 ![](imgs/heiaheia.png)
 
