@@ -44,6 +44,8 @@
 
 取得的运动轨迹数据可以参考示例文件： [single_log_20130817.json](single_log_20130817.json)。这个轨迹是跟着绿野去长峪城腐败的轨迹。：D，摆两张照片放放毒。
 
+
+
 ### GPX文件输出 ###
 
 Python 中有直接写 GPX 格式文件的包： [gpxpy](https://github.com/tkrajina/gpxpy) 。 用来创建 GPX 文件非常容易。函数中的参数 route 是 get\_single\_log 的结果。不过在使用中，如果将时间数据写入 GPX 文件时，gpxpy有个小Bug，需要对时间格式处理的部分做个小调整。
@@ -195,6 +197,76 @@ gpxpy Bug 修正， gpx.py 文件
 
 ![](imgs/gpx_noshift.png)
 
+### Track 和 Route ###
+
+新浪微博网友 @齐亮-Cavendish 发现如上文生成的 GPX 文件，没法导入 heiaheia.com , 经过检查，发现 heiaheia 只能够导入 Track 格式的 GPX 文件。
+
+因此修改 GPX 输出代码如下，增加参数对导出格式的限定。
+
+    # Type 可以取值为 "track" or "route"， 缺省为 "track"
+    def trans(self , route , type = "track"):
+        name = route["data"]["start_time"]
+        points = route["data"]["points"]
+
+        # Calculate offset of start point
+        lat = points[0]["latitude"]
+        lon = points[0]["longitude"]
+
+        realoffset = self.justifyCityOffset( float(lat) ,float(lon) )
+        print realoffset
+
+        gpx = gpxpy.gpx.GPX()
+
+        if type == "route":
+            # Create route in GPX Route Format:
+            rtname = "Route %s" % name
+            gpx_route = gpxpy.gpx.GPXRoute(name = rtname)
+
+            i = 1
+            for p in points:
+                tmpname = "#%5d" % i
+                tmptime = strptime( p["time_stamp"] , DATE_FORMAT )
+                lat = float(p["latitude"]) + float(realoffset[0])
+                lon = float(p["longitude"]) + float(realoffset[1])
+
+                gpx_point = gpxpy.gpx.GPXRoutePoint( name = tmpname , longitude = lon , latitude = lat ,
+                    elevation = p["elevation"] , time = tmptime )
+                # print gpx_point
+                gpx_route.points.append( gpx_point )
+                i = i + 1
+
+            gpx.routes.append(gpx_route)
+        else:
+            # Create route in GPX Track Format:
+            trkname = "Track %s" % name
+            gpx_track = gpxpy.gpx.GPXTrack(name = trkname)
+            gpx_track_seg = gpxpy.gpx.GPXTrackSegment()
+
+            i = 1
+            for p in points:
+                tmpname = "#%5d" % i
+                tmptime = strptime( p["time_stamp"] , DATE_FORMAT )
+                lat = float(p["latitude"]) + float(realoffset[0])
+                lon = float(p["longitude"]) + float(realoffset[1])
+
+                gpx_point = gpxpy.gpx.GPXTrackPoint( name = tmpname , longitude = lon , latitude = lat ,
+                    elevation = p["elevation"] , time = tmptime )
+                # print gpx_point
+                gpx_track_seg.points.append( gpx_point )
+                i = i + 1
+
+            gpx_track.segments.append(gpx_track_seg)
+            gpx.tracks.append(gpx_track)
+
+        # print 'Created GPX:', gpx.to_xml()
+        return gpx.to_xml()
+
+使用 Track 格式的 GPX 文件，能够将数据导入 Heiaheia 网站，能够正确显示轨迹、里程、以及时长。
+
+但是，还有一个问题，文件中Track记录为8月份的数据，并没有被自动放到8月份去，而是放在了当前 Walk 创建时所设定的日期：10月8日。
+
+![](imgs/heiaheia.png)
+
 ### 调用 ###
 
 	account = { "email" : "your@email" , "passwd" : "yourpassword" }
@@ -215,8 +287,10 @@ gpxpy Bug 修正， gpx.py 文件
     route = device.get_single_log( routeId = routeId )
     device.saveJsonData( filename = "/single_log_20130817.json" , data = route)
 
+    gtx = trans.trans( route = route , type = "route" )
+    device.saveXmlData( filename = "/single_log_20130817_route.gpx" , data = gtx)
     gtx = trans.trans( route = route )
-    device.saveXmlData( filename = "/single_log_20130817.gpx" , data = gtx)
+    device.saveXmlData( filename = "/single_log_20130817_track.gpx" , data = gtx)
 
 ---
 ## 代码地址 ##
@@ -233,7 +307,7 @@ gpxpy Bug 修正， gpx.py 文件
 
 Author : iascchen(at)gmail(dot)com
 
-Date : 2013-09-06
+Date : 2013-10-08
 
 新浪微博 : [@问天鼓](http://www.weibo.com/iascchen)
 

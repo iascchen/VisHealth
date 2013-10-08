@@ -240,7 +240,11 @@ class CodoonRoute2Gpx:
 
         return realoffset[1]
 
-    def trans(self , route ):
+    '''
+    Type = "track" or "route"
+    '''
+    def trans(self , route , type = "track"):
+        name = route["data"]["start_time"]
         points = route["data"]["points"]
 
         # Calculate offset of start point
@@ -251,23 +255,47 @@ class CodoonRoute2Gpx:
         print realoffset
 
         gpx = gpxpy.gpx.GPX()
-        # Create route in our GPX:
-        gpx_route = gpxpy.gpx.GPXRoute()
 
-        i = 1
-        for p in points:
-            tmpname = "#%5d" % i
-            tmptime = strptime( p["time_stamp"] , DATE_FORMAT )
-            lat = float(p["latitude"]) + float(realoffset[0])
-            lon = float(p["longitude"]) + float(realoffset[1])
+        if type == "route":
+            # Create route in GPX Route Format:
+            rtname = "Route %s" % name
+            gpx_route = gpxpy.gpx.GPXRoute(name = rtname)
 
-            gpx_point = gpxpy.gpx.GPXRoutePoint( name = tmpname , longitude = lon , latitude = lat ,
-                elevation = p["elevation"] , time = tmptime )
-            # print gpx_point
-            gpx_route.points.append( gpx_point )
-            i = i + 1
+            i = 1
+            for p in points:
+                tmpname = "#%5d" % i
+                tmptime = strptime( p["time_stamp"] , DATE_FORMAT )
+                lat = float(p["latitude"]) + float(realoffset[0])
+                lon = float(p["longitude"]) + float(realoffset[1])
 
-        gpx.routes.append(gpx_route)
+                gpx_point = gpxpy.gpx.GPXRoutePoint( name = tmpname , longitude = lon , latitude = lat ,
+                    elevation = p["elevation"] , time = tmptime )
+                # print gpx_point
+                gpx_route.points.append( gpx_point )
+                i = i + 1
+
+            gpx.routes.append(gpx_route)
+        else:
+            # Create route in GPX Track Format:
+            trkname = "Track %s" % name
+            gpx_track = gpxpy.gpx.GPXTrack(name = trkname)
+            gpx_track_seg = gpxpy.gpx.GPXTrackSegment()
+
+            i = 1
+            for p in points:
+                tmpname = "#%5d" % i
+                tmptime = strptime( p["time_stamp"] , DATE_FORMAT )
+                lat = float(p["latitude"]) + float(realoffset[0])
+                lon = float(p["longitude"]) + float(realoffset[1])
+
+                gpx_point = gpxpy.gpx.GPXTrackPoint( name = tmpname , longitude = lon , latitude = lat ,
+                    elevation = p["elevation"] , time = tmptime )
+                # print gpx_point
+                gpx_track_seg.points.append( gpx_point )
+                i = i + 1
+
+            gpx_track.segments.append(gpx_track_seg)
+            gpx.tracks.append(gpx_track)
 
         # print 'Created GPX:', gpx.to_xml()
         return gpx.to_xml()
@@ -286,6 +314,7 @@ if __name__ == "__main__":
 
     # login
     logined = device.get_users_login(account["email"], account["passwd"])
+    '''
     print device.auth_info
     device.saveJsonData( filename = "/users_token.json" , data = logined)
 
@@ -361,12 +390,14 @@ if __name__ == "__main__":
     device.get_misc_mobile( )
     wwwStatistic = device.get_user_statistic( )
     device.saveJsonData( filename = "/user_statistic.json" , data = wwwStatistic)
-
+    '''
     # Trans Codoon GPS Data to GPX format
     routeId = "03e1cd1e-07b1-11e3-b50f-00163e020001"
     trans = CodoonRoute2Gpx()
     trans.loadCityOffset()
     route = device.get_single_log( routeId = routeId )
     device.saveJsonData( filename = "/single_log_20130817.json" , data = route)
+    gtx = trans.trans( route = route , type = "route" )
+    device.saveXmlData( filename = "/single_log_20130817_route.gpx" , data = gtx)
     gtx = trans.trans( route = route )
-    device.saveXmlData( filename = "/single_log_20130817.gpx" , data = gtx)
+    device.saveXmlData( filename = "/single_log_20130817_track.gpx" , data = gtx)
