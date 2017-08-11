@@ -64,6 +64,7 @@ caldat <- cbind(caldat, seq=d.loc)
 r2b <- c("#0571B0", "#92C5DE", "#F7F7F7", "#F4A582", "#CA0020") #red to blue                                                                               
 r2g <- c("#D61818", "#FFAE63", "#FFFFBD", "#B5E384")   #red to green
 w2b <- c("#045A8D", "#2B8CBE", "#74A9CF", "#BDC9E1", "#F1EEF6")   #white to blue
+g2r <- c("#B5E384", "#FFFFBD", "#FFAE63", "#D61818") #green to red
             
 assign("col.sty", get(color))
 calendar.pal <- colorRampPalette((col.sty), space = "Lab")
