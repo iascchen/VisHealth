@@ -1,4 +1,4 @@
-# VisHealth
+# VisHealth (deprecated)
 
 VisHealth is a open source project of data visualization for sports monitor and health care, which is developed in python 2.7.3.
 we want to integrate some wearable devices data, visualize them for better sports and health suggestion.
